@@ -8,14 +8,14 @@ import time
 import plotly.express as px
 
 
-
+#Creating api connection
 
 api_service_name = "youtube"
 api_version = "v3"
 api_key='AIzaSyBOJQslAidvVay6cpZVdRgzWunEaioSdhA'
 youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=api_key)
 
-
+#Function to fetch Channel data 
 def channel_data(channel_id):
     request = youtube.channels().list(
         part="snippet,contentDetails,statistics",
@@ -32,6 +32,7 @@ def channel_data(channel_id):
     
     return data
 
+#Function to fetch video data
 def get_video_ids(channel_id):
     video_ids=[]
     request = youtube.channels().list(
@@ -85,9 +86,8 @@ def videos(video_ids):
     except:
         pass
     return vid
-        
-    #return table
 
+#Function to convert duration of videos into time format using regular expression
 def convert_time(duration):
     regex=r'PT(\d+H)?(\d+M)?(\d+S)'
     match=re.match(regex,duration)
@@ -100,7 +100,7 @@ def convert_time(duration):
     total_sec=hours * 3600 + minutes* 60 + seconds
     return '{:02d}:{:02d}:{:02d}'.format(int(total_sec/3600),int((total_sec % 3600)/60),int(total_sec % 60))
             
-
+#Function to Fetch Comments
 def commentdet(video_ids):
     comments=[]
     for video_id in video_ids:
@@ -119,10 +119,10 @@ def commentdet(video_ids):
             pass
     return comments
 
-
+#Using MongoDB to store data in a database and fetch them when want
 client=pymongo.MongoClient('mongodb+srv://krishnaganth09:Krishna@cluster0.yhgbrws.mongodb.net/')
 db=client['Youtube_data']
-
+#Function to insert fetched data to MongoDB in a single call
 def channel_details(channel_id):
     channel_info=channel_data(channel_id)
     video_id=get_video_ids(channel_id)
@@ -136,7 +136,7 @@ def channel_details(channel_id):
     return 'Uploaded'
 
 
-
+#Inserting into MySQL data base by giving connection using mysql.connector 
 mydb= mysql.connector.connect(
     host='localhost',
     user='root',
@@ -144,7 +144,8 @@ mydb= mysql.connector.connect(
     
 mycursor=mydb.cursor(buffered=True)
 mycursor.execute("create database if not exists youtube_data")
-
+#Function to insert channel data from MongoDB into MySQL by converting it into Dataframe using Pandas 
+#Mysql insertion can also be done by converting data into DataFrame and inserting via SQLAlchemy by Creating an engine
 def channel_table(single_name):
     mydb= mysql.connector.connect(
         host='localhost',
@@ -199,7 +200,8 @@ def channel_table(single_name):
         except:
             information=f'Provided channel name {single_name} exists already'
             return information 
-
+#Function to insert video data from MongoDB into MySQL by converting it into Dataframe using Pandas 
+#Mysql insertion can also be done by converting data into DataFrame and inserting via SQLAlchemy by Creating an engine
 def video_table(single_name):   
     mydb= mysql.connector.connect(
         host='localhost',
@@ -266,7 +268,8 @@ def video_table(single_name):
         
         mycursor.execute(videos_insert,values)
         mydb.commit()
-
+#Function to insert comments data from MongoDB into MySQL by converting it into Dataframe using Pandas 
+#Mysql insertion can also be done by converting data into DataFrame and inserting via SQLAlchemy by Creating an engine
 def comment_table(single_name):
         mydb= mysql.connector.connect(
                 host='localhost',
@@ -310,7 +313,7 @@ def comment_table(single_name):
                         row['published'])
                 mycursor.execute(comments_insert,values)
                 mydb.commit()
-
+#function to insert all the data from Mongodb into Mysql using a button in  streamlit by using common parameters like channel used here
 def all_tables(unique_channel):
     information=channel_table(unique_channel)
     if information:
@@ -351,7 +354,7 @@ def display_comments():
     df3=st.dataframe(comment_list)
     return df3
 
-
+#Setting up streamlit to get to operated by an user
 st.set_page_config(page_title='Youtube data', page_icon=':butterfly:',layout='wide',initial_sidebar_state='auto',menu_items=None)
 st.image(r'https://getwallpapers.com/wallpaper/full/7/2/c/1415963-large-buddha-quotes-wallpaper-1920x1200-for-desktop.jpg',width=700,caption=None,output_format='auto',channels='RGB')
 information='''This is an web application,where it gets youtube channel 
@@ -373,7 +376,6 @@ with st.sidebar:
    
     if st.button('Know more'):
         st.write_stream(info())
-        
 
 channel_id=st.text_input('Enter Channel ID here!')
 if st.button('Collect and store datas'):
