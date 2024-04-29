@@ -26,9 +26,12 @@ Access the application through the provided URL.
 Enter the YouTube channel ID to collect and store data.
 Choose options to view channel, video, and comment details.
 Use the provided queries to analyze the data as needed.
+
 Screenshots
 
+
 <img width="890" alt="image" src="https://github.com/Krishnaganth22/Youtube_data_warehousing/assets/161042495/2bc2ecc7-1946-439a-99e9-375ca6004dd9">
+
 
 
 
