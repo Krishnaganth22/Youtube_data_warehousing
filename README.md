@@ -28,7 +28,8 @@ Choose options to view channel, video, and comment details.
 Use the provided queries to analyze the data as needed.
 Screenshots
 
-<img width="906" alt="image" src="https://github.com/Krishnaganth22/Youtube_data_warehousing/assets/161042495/ea5289bf-c297-4e37-a11f-b8bf3dae8195">
+<img width="890" alt="image" src="https://github.com/Krishnaganth22/Youtube_data_warehousing/assets/161042495/2bc2ecc7-1946-439a-99e9-375ca6004dd9">
+
 
 
 # Thank you for visiting my repository!
