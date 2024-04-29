@@ -368,7 +368,7 @@ def info():
             time.sleep(0.02) 
 
 with st.sidebar:
-    st.title(':green[YOUTUBE DATA HARVESTING ADN WAREHOUSING]')
+    st.title(':green[YOUTUBE DATA HARVESTING AND WAREHOUSING]')
     st.caption(':yellow[You can also listen to the track to work peacefully]')
     st.audio(r"C:\Users\sankara subramanian\Downloads\Pudhu Vellai Mazhai (Instrumental).mp3",format='audio/mpeg',loop=False,start_time=0)
     st.header(':blue[Streamlit usage video]')
